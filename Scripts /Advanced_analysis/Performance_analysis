@@ -1,0 +1,45 @@
+/*
+PERFORMANCE ANALYSIS
+current [measure]  - Target[measure]
+urrent year Sales - previous year Sales
+Current Sales      - lowest Sales
+
+WINDOW FUNCTIONS
+
+Analyse the yearly performance of products by comparing their sales to both the average sales performance of the product and previos year's sales
+1. Average Sales
+2. Previous year sales
+*/
+WITH yearly_product_sales as (
+SELECT 
+    YEAR(f.order_date ) AS order_year,
+    p.product_name,
+    SUM(f.sales_amount) as current_sales
+FROM gold.fact_sales f
+LEFT JOIN  gold.dim_products p
+ON p.product_key = f.product_key
+WHERE f.order_date is not null 
+GROUP BY YEAR(f.order_date),p.product_name
+)
+--YOU CANNOT RUN the select query of  (CTE in below query ), 
+--without its code including CTE code above(query above)
+select 
+    order_year,
+    product_name,
+    current_sales,
+    AVG(current_sales) over( PARTITION BY product_name) AS avg_sales,
+    current_sales - AVG(current_sales) over( PARTITION BY product_name) as diff_avg,
+    CASE WHEN (current_sales - AVG(current_sales) over( PARTITION BY product_name) ) > 0 THEN 'Above Avg'
+              WHEN (current_sales - AVG(current_sales) over( PARTITION BY product_name) ) < 0 THEN 'Below Avg'
+              ELSE 'Avg'
+         END AS flag,
+    LAG(current_sales) OVER ( PARTITION BY product_name ORDER BY order_year) AS previous_year_sales,
+    CASE WHEN current_sales - LAG(current_sales) over( PARTITION BY product_name ORDER BY order_year)  > 0 THEN 'Increase'
+              WHEN current_sales - LAG(current_sales) over( PARTITION BY product_name ORDER BY order_year)  < 0 THEN 'Decrease'
+              ELSE 'No change'
+         END AS py_change
+FROM yearly_product_sales
+ORDER BY product_name,
+         order_year
+
+--SIMILARLY WE CAN DO , max,highest.lowest  analysis etcc.. different kinds
