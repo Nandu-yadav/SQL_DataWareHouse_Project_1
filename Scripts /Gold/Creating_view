@@ -60,3 +60,23 @@ LEFT JOIN silver.erp_loc_a101 la
 SELECT DISTINCT gender from gold.dim_customers 
 */
 --========================================================================================
+
+
+CREATE VIEW  gold.dim_products as 
+
+SELECT 
+    ROW_NUMBER() OVER(ORDER BY pn.prd_start_dt, pn.prd_key) as product_key,
+    pn.prd_id as product_id,
+    pn.prd_key as product_number,
+    pn.prd_nm as product_name,
+    pn.cat_id as catogery_id,
+    pc.cat as category,
+    pc.subcat as subcategory,
+    pc.maintenence ,
+    pn.prd_cost as cost,
+    pn.prd_line,
+    pn.prd_start_dt as start_date
+FROM silver.crm_prd_info pn
+LEFT JOIN SILVER.erp_px_cat_g1v2 pc
+ON pn.cat_id=pc.id
+WHERE pn.prd_end_dt IS NULL 
