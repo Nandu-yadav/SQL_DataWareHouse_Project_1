@@ -1,0 +1,67 @@
+Use Datawarehouse
+--DATA SEGMENTATION
+/*
+	[MEASURE] BY [MEASURE]
+	Total Products By Sales Range
+	Total Customers By Age
+--	CASE WHEN STATEMENTS
+segment products into cost ranges and count how many products fall into each segment
+*/
+
+WITH product_segment as (
+SELECT 
+	product_key,
+	product_name,
+	cost,
+	CASE WHEN cost<100 THEN 'Below 100'
+		 WHEN cost	BETWEEN 100 AND 500 THEN '100-500'
+		 WHEN cost BETWEEN 500 AND 1000 THEN '500-1000'
+		 ELSE 'Above 1000'
+	END cost_range
+FROM gold.dim_products)
+
+SELECT 
+cost_range,
+COUNT(product_key) as total_products
+FROM product_segment
+GROUP BY cost_range 
+ORDER BY COUNT(product_key) DESC 
+
+/* Group customers into three customer segments based on their spending and behaviour
+	VIP : Customer with atleast 12 months of history and spending more than Euro 5,000.
+	Regular : Customers with at least 12 months of history but spending 5000euro or less
+	New : Customers with a lifespan less than 12 months.
+And find the total number of customers by each group
+*/
+
+
+WITH customer_segment as (
+SELECT
+	c.customer_key,
+	SUM(f.sales_amount)  as total_sales,
+	MIN(order_date) as first_order,
+	MAX(order_date) as last_order,
+	DATEDIFF(month,MIN(order_date),MAX(order_date)) as lifespan
+FROM gold.fact_sales f
+LEFT JOIN gold.dim_customers c
+ON f.customer_key = c.customer_key
+GROUP BY c.customer_key 
+)
+
+
+select 
+	segmentation2,
+	COUNT(customer_key) as total_customers
+FROM(
+		SELECT 
+			customer_key, 
+			--total_sales,
+			--lifespan,
+		   CASE WHEN  total_sales  >  5000 and lifespan >=12 THEN 'VIP'
+				WHEN  total_sales  <= 5000 and lifespan >=12 THEN 'Regular'
+				ELSE 'New'
+			END segmentation2
+		FROM customer_segment
+		)t
+GROUP BY segmentation2
+ORDER BY total_customers DESC
