@@ -1,0 +1,62 @@
+
+USE Datawarehouse
+
+SELECT 
+	order_date,
+	sales_amount
+FROM gold.fact_sales
+WHERE order_date is not null
+ORDER BY order_date
+
+-- Total sales over years
+SELECT 
+	YEAR(order_date)  AS order_year,
+	SUM(sales_amount) AS total_sales,
+	count(DISTINCT customer_key) as total_customers,
+	SUM(quantity) as quantity
+FROM gold.fact_sales
+WHERE  order_date is not null
+GROUP BY YEAR(order_date)
+ORDER BY YEAR(order_date)
+
+-- Total sales ,customers and quantity sold over years,months
+SELECT 
+	YEAR(order_date)  AS order_year,
+	MONTH(order_date) AS order_month,
+	SUM(sales_amount) AS total_sales,
+	count(DISTINCT customer_key) as total_customers,
+	SUM(quantity) as quantity
+FROM gold.fact_sales
+WHERE  order_date is not null
+GROUP BY YEAR(order_date),MONTH(order_date)
+ORDER BY YEAR(order_date),MONTH(order_date)
+
+
+-- DATETRUNC use
+SELECT 
+	MONTH(order_date) AS order_month,
+	SUM(sales_amount) AS total_sales
+FROM gold.fact_sales
+WHERE  order_date is not null
+GROUP BY MONTH(order_date)
+ORDER BY MONTH(order_date)
+
+SELECT 
+	DATETRUNC(YEAR,order_date) AS order_date,
+	SUM(sales_amount) AS total_sales,
+	count(DISTINCT customer_key) as total_customers,
+	SUM(quantity) as quantity
+FROM gold.fact_sales
+WHERE  order_date is not null
+GROUP BY DATETRUNC(YEAR,order_date)
+ORDER BY DATETRUNC(YEAR,order_date)
+
+SELECT 
+	FORMAT(order_date,'yyyy-MMM') AS order_date,       -- FORMAT DATE
+	SUM(sales_amount) AS total_sales,                  -- CANNOT be sorted because here the date is as string  
+	count(DISTINCT customer_key) as total_customers,   --so it will be sorted alphabetical order of month
+	SUM(quantity) as quantity
+FROM gold.fact_sales
+WHERE  order_date is not null
+GROUP BY FORMAT(order_date,'yyyy-MMM')
+ORDER BY FORMAT(order_date,'yyyy-MMM')
