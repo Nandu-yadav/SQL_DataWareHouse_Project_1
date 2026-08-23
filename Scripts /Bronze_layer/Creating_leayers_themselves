@@ -1,0 +1,35 @@
+/*
+========================================================================================================================
+Create Database and schemas
+=========================================================================================================
+Script Pi\urpose :
+   This script crates  a new database named 'DataWarehouse
+ after checking if it already exists. If exits it is dropped and recreated. Additionally, the sript sets up three schemas within the database 'Bronze','silver' and 'Gold'.
+WARNING :
+  Running this script will drop the entire 'DataWarehouse' database if it exists.
+  All data in the database will be permanentky deleted \. proceed with caution
+and ensure you have proper backups before running this scripts
+*/
+ 
+
+USE master;
+GO
+-- Drop and Recreate the "Datawarehouse" database
+IF EXISTS (SELECT 1 FROM sys.databases WHERE NAME = 'Datawarehouse')
+BEGIN 
+      ALTER DATABASE Datawarehouse SET SINGLE?_USER WITH ROLLBACK IMMEDIATE;
+      DROP DATABASE Datawarehouse;
+END;
+GO
+--Create Database 'Datawarehouse' database
+Create DATABASE Datawarehouse;
+
+USE Datawarehouse;
+
+GO
+CREATE SCHEMA bronze ;
+GO
+CREATE SCHEMA silver ;
+GO
+CREATE SCHEMA gold ;
+GO
