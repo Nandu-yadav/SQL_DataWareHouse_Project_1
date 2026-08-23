@@ -1,0 +1,23 @@
+
+-- Check For NULLs or Duplicates 
+SELECT 
+prd_id,
+prd_key,
+REPLACE(SUBSTRING(prd_key,1,5),'-' ,'_') AS cat_id,
+SUBSTRING(prd_key,7,LEN(prd_key)) AS prd_key,
+prd_nm,
+ISNULL(prd_cost,0) AS prd_cost,
+prd_line,
+prd_start_dt,
+prd_end_dt
+FROM bronze.crm_prd_info
+--WHERE SUBSTRING(prd_key,7,LEN(prd_key)) IN  (SELECT DISTINCT id FROM bronze.erp_px_cat_g1v2)
+
+SELECT prd_id,
+prd_key,
+prd_nm,
+prd_start_dt,
+prd_end_dt,
+LEAD(prd_start_dt) OVER(PARTITION BY prd_key ORDER BY prd_start_dt)
+FROM bronze.crm_prd_info
+WHERE prd_key = 'AC-HE-HL-U509' OR prd_key =   ' AC-HE-HL-U509-R'
