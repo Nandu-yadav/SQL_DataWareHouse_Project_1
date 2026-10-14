@@ -183,7 +183,8 @@ It also provides a foundation for extending traditional data warehousing workflo
 
 **Built with:** SQL Server | T-SQL | Medallion Architecture | Supply Chain Analytics
 
-**Author:** [YOUR NAME]
+**Author:** Sai Nandu peddagolla
 
-- LinkedIn: [ADD LINK]
-- GitHub: [ADD LINK]
+- LinkedIn: [LINK](https://www.linkedin.com/in/nandu-yadavv)]
+- GitHub: [ADD LINK](https://github.com/Nandu-yadav)
+
