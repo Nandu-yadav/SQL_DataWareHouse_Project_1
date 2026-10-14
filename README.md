@@ -168,11 +168,11 @@ intelligent-supply-chain-analytics/
 
 ## 📚 Project Resources
 
-- **GitHub Repository:** [[ADD GITHUB REPOSITORY LINK](https://github.com/Nandu-yadav/SQL_DataWareHouse_Project_1/edit/main/README.md)]
-- **Dataset:** [ADD DATASET LINK]
-- **Data Architecture Diagram:** [ADD DIAGRAM LINK]
-- **Data Model:** [ADD DATA MODEL LINK]
-- **Project Documentation:** [[ADD DOCUMENTATION LINK](https://app.notion.com/p/SQL-Data-Warehouse-Project-Plan-3bfb8974d3b582f6bd570166dbc25ab4?source=copy_link)]
+- **GitHub Repository:** [[GITHUB REPOSITORY LINK](https://github.com/Nandu-yadav/SQL_DataWareHouse_Project_1/edit/main/README.md)]
+- **Dataset:** [DATASET LINK]
+- **Data Architecture Diagram:** [DIAGRAM LINK]
+- **Data Model:** [DATA MODEL LINK]
+- **Project Documentation:** [[DOCUMENTATION LINK](https://app.notion.com/p/SQL-Data-Warehouse-Project-Plan-3bfb8974d3b582f6bd570166dbc25ab4?source=copy_link)]
 
 
 ## 👨‍💻 About This Project
@@ -185,6 +185,6 @@ It also provides a foundation for extending traditional data warehousing workflo
 
 **Author:** Sai Nandu peddagolla
 
-- LinkedIn: [LINK](https://www.linkedin.com/in/nandu-yadavv)]
-- GitHub: [ADD LINK](https://github.com/Nandu-yadav)
+- LinkedIn: [Link](https://www.linkedin.com/in/nandu-yadavv)]
+- GitHub: [Link](https://github.com/Nandu-yadav)
 
