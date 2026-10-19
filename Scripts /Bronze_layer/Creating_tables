@@ -19,74 +19,81 @@ GO
 
 SET QUOTED_IDENTIFIER ON
 GO
-IF OBJECT_ID('bronze.crm_cust_info','U')  IS NOT NULL
-     DROP TABLE bronze.crm_cust_info ;
+/*
+ Understand the source system 
+ before you do that have a deep disscussion with the source sustem experts and ask questions on what type of tables given , what do they want,etc..
+  Analysing - Interview source system Experts
+  CODING    -- Digital ingestion
+  Validating -- Data Completeness and schema Checks
 
+*/
+USE Datawarehouse2
+GO
+
+
+IF OBJECT_ID ('bronze.crm_cust_info','U') IS NOT NULL 
+DROP TABLE bronze.crm_cust_info;
 CREATE TABLE bronze.crm_cust_info(
-	[cst_id] [int] NULL,
-	[cst_key] [varchar](50) NULL,
-	[cst_firstname] [nvarchar](50) NULL,
-	[cst_lastname] [nvarchar](50) NULL,
-	[cst_material_status] [nvarchar](50) NULL,
-	[cst_gndr] [nvarchar](50) NULL,
-	[cst_create_date] [varchar](50) NULL
-) ON [PRIMARY]
-GO
+	cst_id INT,
+	cst_key NVARCHAR(50),
+	cst_firstname NVARCHAR(50),
+	cst_lastname NVARCHAR(50),
+	cst_material_status NVARCHAR(50),
+	cst_gndr NVARCHAR(50),
+	cst_create_date NVARCHAR(50)
+);
 
-IF OBJECT_ID('bronze.crm_prd_info','U')  IS NOT NULL
-     DROP TABLE bronze.crm_prd_info;
+-- prd_id	prd_key	prd_nm	prd_cost	prd_line	prd_start_dt	prd_end_dt
+IF OBJECT_ID ('bronze.crm_prd_info','U') IS NOT NULL 
+DROP TABLE bronze.crm_prd_info;
+CREATE TABLE bronze.crm_prd_info(
+	prd_id INT,
+	prd_key NVARCHAR(50),
+	prd_nm NVARCHAR(50),
+	prd_cost INT,
+	prd_line NVARCHAR(50),
+	prd_start_dt DATE,
+	prd_end_dt NVARCHAR(50)
+);
 
-CREATE TABLE [bronze].[crm_prd_info](
-	[prd_id] [int] NULL,
-	[prd_key] [nvarchar](50) NULL,
-	[prd_nm] [nvarchar](50) NULL,
-	[prd_cost] [int] NULL,
-	[prd_line] [nvarchar](50) NULL,
-	[prd_start_dt] [datetime] NULL,
-	[prd_end_dt] [datetime] NULL
-) ON [PRIMARY]
-GO
+--  sls_ord_num	     sls_prd_key	sls_cust_id  	sls_order_dt	sls_ship_dt	 sls_due_dt	sls_sales	sls_quantity	sls_price
+IF OBJECT_ID ('bronze.crm_sales_details','U') IS NOT NULL 
+DROP TABLE bronze.crm_sales_details;
+CREATE TABLE bronze.crm_sales_details(
+	sls_ord_num NVARCHAR(50),
+	sls_prd_key NVARCHAR(50),
+	sls_cust_id NVARCHAR(50),
+	sls_order_dt NVARCHAR(50),
+	sls_ship_dt DATE,
+	sls_due_dt DATE,
+	sls_sales INT,
+	sls_quantity INT,
+	sls_price VARCHAR(50)
+);
+--  CID	BDATE	GEN
+IF OBJECT_ID ('bronze.erp_cust_az12','U') IS NOT NULL 
+DROP TABLE bronze.erp_cust_az12;
+CREATE TABLE bronze.erp_cust_az12(
+	cid NVARCHAR(50),
+	bdate DATE,
+	gen NVARCHAR(50)
+);
 
-IF OBJECT_ID('bronze.crm_sales_details','U')  IS NOT NULL
-     DROP TABLE bronze.crm_sales_details;
-
-CREATE TABLE [bronze].[crm_sales_details](
-	[sls_ord_num] [nvarchar](50) NULL,
-	[sls_prd_key] [nvarchar](50) NULL,
-	[sls_cust_id] [int] NULL,
-	[sls_order_dt] [int] NULL,
-	[sls_ship_dt] [int] NULL,
-	[sls_due_date] [int] NULL,
-	[sls_sales] [int] NULL,
-	[sls_quantity] [int] NULL,
-	[sls_price] [int] NULL
-) ON [PRIMARY]
-GO
-
-IF OBJECT_ID('bronze.erp_cust_az12','U')  IS NOT NULL
-     DROP TABLE bronze.erp_cust_az12;
-CREATE TABLE [bronze].[erp_cust_az12](
-	[cid] [nvarchar](50) NULL,
-	[bdate] [date] NULL,
-	[gen] [nvarchar](50) NULL
-) ON [PRIMARY]
-GO
-
-
-IF OBJECT_ID('bronze.erp_loc_a101','U')  IS NOT NULL
-     DROP TABLE bronze.erp_loc_a101;
+-- CID	CNTRY
+IF OBJECT_ID ('bronze.erp_loc_a101','U') IS NOT NULL 
+DROP TABLE bronze.erp_loc_a101;
 CREATE TABLE bronze.erp_loc_a101(
-	[cid] [nvarchar](50) NULL,
-	[cntry] [nvarchar](50) NULL
-) ON [PRIMARY]
-GO
-
-IF OBJECT_ID('bronze.erp_px_cat_g1v2','U')  IS NOT NULL
-     DROP TABLE bronze.erp_px_cat_g1v2;
+	cid NVARCHAR(50),
+	cntry NVARCHAR(50)
+);
+-- id cat subcat maintenance
+IF OBJECT_ID ('bronze.erp_px_cat_g1v2','U') IS NOT NULL 
+DROP TABLE bronze.erp_px_cat_g1v2;
 CREATE TABLE bronze.erp_px_cat_g1v2(
-	[id] [nvarchar](50) NULL,
-	[cat] [nvarchar](50) NULL,
-	[subcat] [nvarchar](50) NULL,
-	[maintenence] [nvarchar](50) NULL
-) ON [PRIMARY]
-GO
+	id NVARCHAR(50),
+	cat NVARCHAR(50),
+	subcat NVARCHAR(50),
+	maintenance NVARCHAR(50)
+);
+
+
